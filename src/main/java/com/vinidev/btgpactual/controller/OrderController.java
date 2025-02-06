@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/orders")
 public class OrderController {
@@ -25,8 +27,10 @@ public class OrderController {
             @PathVariable("customerId") Long costumerId) {
 
         var pageResponse = orderService.findAllCustomerId(costumerId, PageRequest.of(page, pageSize));
+        var totalOnOrders = orderService.findTotalOnOrdersByCustomerId(costumerId);
 
         return ResponseEntity.ok(new ApiResponse<>(
+                Map.of("totalOnOrders", totalOnOrders),
                 pageResponse.getContent(),
                 PaginationResponse.fromPage(pageResponse)
         ));
