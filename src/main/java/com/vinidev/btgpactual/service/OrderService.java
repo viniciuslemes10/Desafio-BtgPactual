@@ -53,7 +53,7 @@ public class OrderService {
 
         var response = mongoTemplate.aggregate(aggregations, "tb_orders", Document.class);
 
-        return (BigDecimal) response.getUniqueMappedResult().getOrDefault("total", BigDecimal.ZERO);
+        return new BigDecimal(response.getUniqueMappedResult().get("total").toString());
     }
 
     private BigDecimal getTotal(OrderCreatedEvent event) {
